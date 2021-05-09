@@ -24,7 +24,6 @@
 
 ## Building
 1. Install [theos](https://github.com/theos/theos/wiki/Installation)
-2. Set `$THEOS_DEVICE_IP` to your phone's local IP address
 3. Plug your phone into your computer
 4. Run `make do`
 
