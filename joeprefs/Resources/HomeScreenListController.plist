@@ -110,6 +110,19 @@
 			<key>defaults</key>
 			<string>com.propr.joeprefs</string>
 			<key>key</key>
+			<string>hideAppLibrary</string>
+			<key>label</key>
+			<string>Disable App Library</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.propr.joeprefs</string>
+			<key>key</key>
 			<string>hideAppLibraryBlur</string>
 			<key>label</key>
 			<string>Hide App Library Folder Blur</string>
