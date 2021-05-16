@@ -9,7 +9,7 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = joe
 
 joe_FILES = Joe.xm
-joe_CFLAGS = -fobjc-arc
+joe_CFLAGS = "-fobjc-arc" "-O3" "-march=native" "-flto=thin"
 joe_LDFLAGS = -install_name /Library/MobileSubstrate/DynamicLibraries/joe.dylib
 joe_FRAMEWORKS = Foundation UIKit AVKit
 
