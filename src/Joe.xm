@@ -32,16 +32,6 @@ Set Number of Dock Icons
 
 #define TWEAK_PREFS_PATH @"/var/mobile/Library/Preferences/com.propr.joeprefs.plist"
 
-static NSUserDefaults *prefs = [[NSUserDefaults alloc] initWithSuiteName:TWEAK_PREFS_PATH];
-
-BOOL getBoolSetting(NSString* setting) {
-    return [[prefs objectForKey:setting] ?: @NO boolValue];
-}
-
-int getIntSetting(NSString* setting) {
-    return [[prefs objectForKey:setting] intValue];
-}
-
 int drm() {
 	if (![[NSFileManager defaultManager] fileExistsAtPath:@"/var/lib/dpkg/info/com.propr.joe.list"]) {
 		return NO;
@@ -54,7 +44,7 @@ int drm() {
 %hook SBDockView
 
 - (void)setBackgroundView:(UIView *)arg1 {
-	if (getBoolSetting(@"hideDockBG")) {
+	if ([libpropr boolForKey:@"hideDockBG"]) {
 		%orig(nil);
 	} else {
 		%orig;
@@ -67,7 +57,7 @@ int drm() {
 %hook SBFloatingDockView
 
 - (void)setBackgroundView:(UIView *)arg1 {
-	if (getBoolSetting(@"hideDockBG")) {
+	if ([libpropr boolForKey:@"hideDockBG"]) {
 		%orig(nil);
 	} else {
 		%orig;
@@ -80,7 +70,7 @@ int drm() {
 %hook SBFolderIconImageView
 
 - (void)setBackgroundView:(id)bgView {
-	if (getBoolSetting(@"hideFolderIconBG")) {
+	if ([libpropr boolForKey:@"hideFolderIconBG"]) {
 		bgView = nil;
 	} else {
 		%orig;
@@ -93,7 +83,7 @@ int drm() {
 %hook SBIconListPageControl
 
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hidePageDots")) {
+	if ([libpropr boolForKey:@"hidePageDots"]) {
 		return %orig(0.0);
 	} else {
 		return %orig;
@@ -101,7 +91,7 @@ int drm() {
 }
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hidePageDots")) {
+	if ([libpropr boolForKey:@"hidePageDots"]) {
 		return YES;
 	} else {
 		return %orig;
@@ -109,7 +99,7 @@ int drm() {
 }
 
 - (BOOL)actsAsButton {
-	if (getBoolSetting(@"hidePageDots")) {
+	if ([libpropr boolForKey:@"hidePageDots"]) {
 		return NO;
 	} else {
 		return %orig;
@@ -122,7 +112,7 @@ int drm() {
 %hook SBIconView
 
 - (void)setLabelHidden:(BOOL)hidden {
-	if (getBoolSetting(@"hideLabel")) {
+	if ([libpropr boolForKey:@"hideLabel"]) {
 		%orig(YES);
 	} else {
 		%orig;
@@ -135,7 +125,7 @@ int drm() {
 %hook SBIconBetaLabelAccessoryView
 
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideTestflight")) {
+	if ([libpropr boolForKey:@"hideTestflight"]) {
 		%orig(0.0);
 	} else {
 		return %orig;
@@ -148,7 +138,7 @@ int drm() {
 %hook SBFolderBackgroundView
 	
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideFolderBG")) {
+	if ([libpropr boolForKey:@"hideFolderBG"]) {
 		%orig(0.0);
 	} else {
 		return %orig;
@@ -161,7 +151,7 @@ int drm() {
 %hook SBIconBadgeView
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideNotificationBadges")) {
+	if ([libpropr boolForKey:@"hideNotificationBadges"]) {
 		return YES;
 	} else {
 		return NO;
@@ -169,7 +159,7 @@ int drm() {
 }
 	
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideNotificationBadges")) {
+	if ([libpropr boolForKey:@"hideNotificationBadges"]) {
 		%orig(0.0);
 	} else {
 		return %orig;
@@ -184,10 +174,10 @@ int drm() {
 - (NSUInteger)numberOfPortraitColumns {
     NSUInteger rows = MSHookIvar<NSUInteger>(self, "_numberOfPortraitRows");
     if (rows == 1) {
-		if (getIntSetting(@"numDockIcon") == 0) {
+		if ([libpropr intForKey:@"numDockIcon"] == 0) {
         	return %orig;
 		} else {
-			return getIntSetting(@"numDockIcon");
+			return [libpropr intForKey:@"numDockIcon"];
 		}
 	}
 	
@@ -200,7 +190,7 @@ int drm() {
 %hook SBHLibraryCategoryPodBackgroundView
 
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideAppLibraryBlur")) {
+	if ([libpropr boolForKey:@"hideAppLibraryBlur"]) {
 		%orig(0.0);
 	} else {
 		return %orig;
@@ -213,7 +203,7 @@ int drm() {
 %hook UIStatusBar_Modern
 
 - (void)setStatusBar:(id)porn {
-	if (getBoolSetting(@"hideStatusBar")) {
+	if ([libpropr boolForKey:@"hideStatusBar"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -226,7 +216,7 @@ int drm() {
 %hook SBFolderTitleTextField
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideFolderTitle")) {
+	if ([libpropr boolForKey:@"hideFolderTitle"]) {
 		return YES;
 	} else {
 		return %orig;
@@ -234,7 +224,7 @@ int drm() {
 }
 
 - (void)setText:(NSString*)balls {
-		if (getBoolSetting(@"hideFolderTitle")) {
+		if ([libpropr boolForKey:@"hideFolderTitle"]) {
 		return %orig(@"");
 	} else {
 		return %orig;
@@ -247,7 +237,7 @@ int drm() {
 %hook CSCoverSheetTransitionSettings
 
 - (BOOL)iconsFlyIn {
-	if (getBoolSetting(@"hideIconFly")) {
+	if ([libpropr boolForKey:@"hideIconFly"]) {
 		return NO;
 	} else {
 		return %orig;
@@ -260,7 +250,7 @@ int drm() {
 %hook SBUIProudLockIconView
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideLockIcon")) {
+	if ([libpropr boolForKey:@"hideLockIcon"]) {
 		return YES;
 	} else {
 		return %orig;
@@ -268,7 +258,7 @@ int drm() {
 }
 
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideLockIcon")) {
+	if ([libpropr boolForKey:@"hideLockIcon"]) {
 		%orig(0.0);
 	} else {
 		return %orig;
@@ -281,7 +271,7 @@ int drm() {
 %hook CSQuickActionsView
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideQuickActions")) {
+	if ([libpropr boolForKey:@"hideQuickActions"]) {
 		return YES;
 	} else {
 		return %orig;
@@ -289,7 +279,7 @@ int drm() {
 }
 
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideQuickActions")) {
+	if ([libpropr boolForKey:@"hideQuickActions"]) {
 		return %orig(0.0);
 	} else {
 		return %orig;
@@ -301,7 +291,7 @@ int drm() {
 %hook CSQuickActionsButton
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideQuickActions")) {
+	if ([libpropr boolForKey:@"hideQuickActions"]) {
 		return YES;
 	} else {
 		return %orig;
@@ -314,7 +304,7 @@ int drm() {
 %hook SBFLockScreenDateView
 
 - (void)setUseCompactDateFormat:(BOOL)isHidden {
-	if (getBoolSetting(@"compactDate")) {
+	if ([libpropr boolForKey:@"compactDate"]) {
 		return %orig(YES);
 	} else {
 		return %orig;
@@ -327,7 +317,7 @@ int drm() {
 %hook SBFLockScreenDateView
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideDate")) {
+	if ([libpropr boolForKey:@"hideDate"]) {
 		return YES;
 	} else {
 		return %orig;
@@ -335,7 +325,7 @@ int drm() {
 }
 
 - (void)setAlpha:(double)alpha {
-	if (getBoolSetting(@"hideDate")) {
+	if ([libpropr boolForKey:@"hideDate"]) {
 		return %orig(0.0);
 	} else {
 		return %orig;
@@ -348,7 +338,7 @@ int drm() {
 %hook NCNotificationListSectionRevealHintView
 
 - (BOOL)isHidden {
-	if (getBoolSetting(@"hideOlderNotifications")) {
+	if ([libpropr boolForKey:@"hideOlderNotifications"]) {
 		return YES;
 	} else {
 		return NO;
@@ -356,7 +346,7 @@ int drm() {
 }
 
 - (void)setForceRevealed:(BOOL)ok {
-	if (getBoolSetting(@"hideOlderNotifications")) {
+	if ([libpropr boolForKey:@"hideOlderNotifications"]) {
 		return %orig(YES);
 	} else {
 		return %orig;
@@ -364,7 +354,7 @@ int drm() {
 }
 
 - (void)setRevealPercentage:(CGFloat)balls {
-	if (getBoolSetting(@"hideOlderNotifications")) {
+	if ([libpropr boolForKey:@"hideOlderNotifications"]) {
 		return %orig(0);
 	} else {
 		return %orig;
@@ -378,7 +368,7 @@ int drm() {
 
 // hide control center grabber
 - (void)setControlCenterGrabberView:(id)ccView {
-	if (getBoolSetting(@"hideCCGrabber")) {
+	if ([libpropr boolForKey:@"hideCCGrabber"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -386,7 +376,7 @@ int drm() {
 }
 
 - (void)setControlCenterGrabberEffectContainerView:(id)ccView {
-	if (getBoolSetting(@"hideCCGrabber")) {
+	if ([libpropr boolForKey:@"hideCCGrabber"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -394,7 +384,7 @@ int drm() {
 }
 
 - (void)setControlCenterTutorsContainerView:(id)ccView {
-	if (getBoolSetting(@"hideCCGrabber")) {
+	if ([libpropr boolForKey:@"hideCCGrabber"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -402,7 +392,7 @@ int drm() {
 }
 
 - (void)setControlCenterGrabberPositionPlaceholderView:(id)ccView {
-	if (getBoolSetting(@"hideCCGrabber")) {
+	if ([libpropr boolForKey:@"hideCCGrabber"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -411,7 +401,7 @@ int drm() {
 
 // hide home bar
 - (void)setHomeAffordanceContainerView:(id)homeView {
-	if (getBoolSetting(@"hideHomeBar")) {
+	if ([libpropr boolForKey:@"hideHomeBar"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -419,7 +409,7 @@ int drm() {
 }
 
 - (void)setHomeAffordanceView:(id)homeView {
-	if (getBoolSetting(@"hideHomeBar")) {
+	if ([libpropr boolForKey:@"hideHomeBar"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -428,7 +418,7 @@ int drm() {
 
 // hide swipe to unlock
 - (void)setCallToActionLabel:(id)label {
-	if (getBoolSetting(@"hideSwipeToUnlock")) {
+	if ([libpropr boolForKey:@"hideSwipeToUnlock"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -436,7 +426,7 @@ int drm() {
 }
 
 - (void)setCallToActionLabelContainerView:(id)label {
-	if (getBoolSetting(@"hideSwipeToUnlock")) {
+	if ([libpropr boolForKey:@"hideSwipeToUnlock"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -444,7 +434,7 @@ int drm() {
 }
 
 - (void)setCallToActionLabelPositionPlaceholderView:(id)label {
-	if (getBoolSetting(@"hideSwipeToUnlock")) {
+	if ([libpropr boolForKey:@"hideSwipeToUnlock"]) {
 		return %orig(nil);
 	} else {
 		return %orig;
@@ -482,7 +472,7 @@ int drm() {
 %hook SBIconController
 
 - (BOOL)isAppLibrarySupported {
-	if (getBoolSetting(@"hideAppLibrary")) {
+	if ([libpropr boolForKey:@"hideAppLibrary"]) {
 		return NO;
 	} else {
 		return %orig;
@@ -494,6 +484,9 @@ int drm() {
 %ctor {
     NSString *bundleID = NSBundle.mainBundle.bundleIdentifier;
     if ([bundleID isEqualToString:@"com.apple.springboard"] && drm()) {
+
+		[libpropr setupWithDomain:TWEAK_PREFS_PATH];
+		
         %init;
     }
 	NSLog(@"Partnered with Meth Development LLC");
