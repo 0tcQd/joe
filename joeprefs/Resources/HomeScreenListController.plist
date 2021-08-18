@@ -156,6 +156,19 @@
 
 		<dict>
 			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.propr.joeprefs</string>
+			<key>key</key>
+			<string>enableFloatingDock</string>
+			<key>label</key>
+			<string>Enable Floating Dock</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
 			<string>PSEditTextCell</string>
 			<key>defaults</key>
 			<string>com.propr.joeprefs</string>

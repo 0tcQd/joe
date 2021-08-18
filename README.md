@@ -1,7 +1,5 @@
 # joe
 
-# now EOL but still on my repo and i might continue development some time in the future
-
 ## Features
 #### System-wide Features
 * Hide Status Bar
@@ -13,10 +11,11 @@
 * Hide Icon Labels
 * Hide Testflight Dot
 * Hide Notification Badges
-* Disable App Library
+* Toggle App Library
 * Hide App Library Blur
 * Hide Folder Title
-* Disable Icon Fly
+* Toggle Icon Fly
+* Toggle Floating Dock
 * Set Number of Dock Icons
 #### Lock Screen Features
 * Hide Quick Actions

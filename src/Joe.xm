@@ -28,7 +28,7 @@ Set Number of Dock Icons
 
 */
 
-#import "Joe.h"
+#import "../include/Joe.h"
 
 #define TWEAK_PREFS_PATH @"/var/mobile/Library/Preferences/com.propr.joeprefs.plist"
 
@@ -472,11 +472,16 @@ int drm() {
 %hook SBIconController
 
 - (BOOL)isAppLibrarySupported {
-	if ([libpropr boolForKey:@"hideAppLibrary"]) {
-		return NO;
-	} else {
-		return %orig;
-	}
+	return [libpropr boolForKey:@"hideAppLibrary"];
+}
+
+%end
+
+// enable floating dock
+%hook SBFloatingDockController
+
++ (BOOL)isFloatingDockSupported {
+	return [libpropr boolForKey:@"enableFloatingDock"];
 }
 
 %end
